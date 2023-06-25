@@ -3,7 +3,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 public class typespeed {
 
-    static String[] words={"apple","mango","hello","the","man","children","walk","weather","mountain","philanthropist"};
+    static String[] words={"phenomenon","mango","hello","exaggerate","neighbour","children","walk","weather","mountain","philanthropist"};
     public static void main(String[] args) throws InterruptedException{
         System.out.println("3");
         TimeUnit.SECONDS.sleep(1);
