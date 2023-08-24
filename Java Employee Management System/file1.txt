@@ -1,0 +1,7 @@
+Employee ID:1
+Employee Name     :Shivansh
+Father's Name     :Ashish
+Employee Contact  :8112301028
+Email Information :shivanshtiwari@icloud.com
+Employee position :ceo
+Employee Salary   :1000000
