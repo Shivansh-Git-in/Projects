@@ -1,260 +1,774 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="config.js"></script>
-  <title>COMPOSE AI</title>
-  <link rel="icon" type="image/png" href="logo.png">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="config.js"></script>
+
+<title>Compose AI</title>
+
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #fdf7f0; /* light cream */
-      color: #333;
-      text-align: center;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    header {
-      padding: 40px 0 20px;
+    body{
+      font-family:'Segoe UI',sans-serif;
+      background:#fdf7f0;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
     }
 
-    header h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #1e56a0; /* stylish blue */
-      margin: 0;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
+    .container{
+      width:950px;
+      max-width:100%;
+      min-height:620px;
+      background:white;
+      border-radius:24px;
+      overflow:hidden;
+      display:flex;
+      box-shadow:0 10px 30px rgba(0,0,0,0.1);
     }
 
-    .hero {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
+    /* LEFT PANEL */
+
+    .left-panel{
+      width:50%;
+      background:linear-gradient(135deg,#1e56a0,#163f73);
+      color:white;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      padding:50px;
+      text-align:center;
     }
 
-    .hero img {
-      width: 100%;
-      border-radius: 10px;
-      margin: 20px 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
+    .left-panel h1{
+      font-size:3rem;
+      margin-bottom:20px;
     }
 
-    .description {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
+    .left-panel p{
+      font-size:1.1rem;
+      line-height:1.8;
+      opacity:0.95;
     }
 
-    .generator-box {
-      background: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      max-width: 600px;
-      margin: 0 auto 40px;
-      text-align: left;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
+    /* RIGHT PANEL */
+
+    .right-panel{
+      width:50%;
+      padding:40px;
+      position:relative;
     }
 
-    .generator-box textarea {
-      width: 100%;
-      height: 120px;
-      padding: 10px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      resize: vertical;
+    h2{
+      color:#1e56a0;
+      margin-bottom:25px;
+      font-size:2rem;
     }
 
-    .generator-box select,
-    .generator-box button {
-      padding: 10px;
-      font-size: 1rem;
-      margin-right: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .input-group{
+      margin-bottom:18px;
     }
 
-    .generator-box button {
-      background-color: #1e56a0;
-      color: white;
-      border: none;
-      cursor: pointer;
+    .input-group input{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid #ddd;
+      outline:none;
+      font-size:1rem;
+      transition:0.3s;
     }
 
-    .generator-box button:hover {
-      background-color: #163f73;
+    .input-group input:focus{
+      border-color:#1e56a0;
+      box-shadow:0 0 0 3px rgba(30,86,160,0.1);
     }
 
-    .reply-box {
-      margin-top: 20px;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #f9f9f9;
-      min-height: 60px;
-      white-space: pre-wrap;
+    .main-btn{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      background:#1e56a0;
+      color:white;
+      font-size:1rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
     }
 
-    .copy-btn {
-      margin-top: 10px;
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+    .main-btn:hover{
+      background:#163f73;
+      transform:translateY(-2px);
     }
 
-    .copy-btn:hover {
-      background-color: #3e9143;
+    .divider{
+      text-align:center;
+      margin:22px 0;
+      position:relative;
+      color:#666;
     }
 
-    .show {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
+    .divider::before,
+    .divider::after{
+      content:'';
+      position:absolute;
+      top:50%;
+      width:40%;
+      height:1px;
+      background:#ddd;
     }
 
-    @media (max-width: 600px) {
-    header h1 {
-    font-size: 2rem;
-    }
-    .description {
-    font-size: 1rem;
-    }
-    .generator-box {
-    padding: 15px;
-    }
-    .generator-box textarea {
-    height: 100px;
-    }
-    }
-    .toast {
-      visibility: hidden;
-      min-width: 220px;
-      background-color: #333;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 10px;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      font-size: 14px;
-      opacity: 0;
-      transition: opacity 0.4s, bottom 0.4s;
-      z-index: 1000;
+    .divider::before{
+      left:0;
     }
 
-    .toast.show {
-      visibility: visible;
-      opacity: 1;
-      bottom: 40px;
+    .divider::after{
+      right:0;
     }
-  </style>
-</head>
-<body>
-  <header>
-    <h1 class="fade-element">COMPOSE AI</h1>
-  </header>
 
-  <div class="hero">
-    <p class="description fade-element">
-      Compose AI is an intelligent reply assistant powered by Google Gemini and Spring Boot. 
-      It helps you generate professional, casual, or friendly replies instantly.
-    </p>
-   <p class="description fade-element">
-      Our chrome extension at work. 
-    </p>
-    <img src="screenshot.png" alt="Compose AI Screenshot" class="fade-element" />
-    <p class="description fade-element">
-      Paste an email below, choose the tone of your reply, and let Compose AI draft the perfect response for you.
-    </p>
-  </div>
+    .google-btn{
+      width:100%;
+      padding:13px;
+      border:1px solid #ddd;
+      background:white;
+      border-radius:12px;
+      cursor:pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      font-size:1rem;
+      font-weight:600;
+      transition:0.3s;
+    }
 
-  <div class="generator-box fade-element">
-    <label for="emailInput">Original Content:</label>
-    <textarea id="emailInput" placeholder="Paste your text here..."></textarea>
+    .google-btn:hover{
+      background:#f5f5f5;
+    }
 
-    <label for="toneSelect">Select Tone:</label>
-    <select id="toneSelect">
-      <option value="casual">Casual</option>
-      <option value="professional">Professional</option>
-      <option value="friendly">Friendly</option>
-    </select>
+    .google-btn img{
+      width:22px;
+    }
 
-    <button onclick="generateReply()">Generate Reply</button>
-    <p class="description fade-element">
-      *We recommend to proofread before sending*
-    </p>
-    <div id="replyOutput" class="reply-box">Your generated reply will appear here...</div>
-    <button class="copy-btn" onclick="copyReply()">Copy to Clipboard</button>
-  </div>
-  <div id="toast" class="toast">Reply copied to clipboard ✅</div>
-  <script>
-    async function generateReply() {
-      const content = document.getElementById("emailInput").value;
-      const tone = document.getElementById("toneSelect").value;
-      const outputBox = document.getElementById("replyOutput");
+    .switch-text{
+      margin-top:22px;
+      text-align:center;
+      color:#666;
+    }
 
-      outputBox.innerText = "Generating reply...";
+    .switch-text span{
+      color:#1e56a0;
+      cursor:pointer;
+      font-weight:600;
+    }
 
-      try {
-        const response = await fetch(`${CONFIG.API_URL}/api/email/generate`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ emailContent: content, tone: tone })
-        });
-        const data = await response.text();
-        outputBox.innerText = data;
-      } catch (err) {
-        outputBox.innerText = "Error generating reply. Please try again.";
+    .toast{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      background:#333;
+      color:white;
+      padding:12px 18px;
+      border-radius:8px;
+      opacity:0;
+      transition:0.4s;
+      z-index:1000;
+    }
+
+    .toast.show{
+      opacity:1;
+    }
+
+    /* VALIDATION */
+
+    .error-text{
+      color:#e63946;
+      font-size:0.85rem;
+      margin-top:6px;
+      display:block;
+    }
+
+    .password-rules{
+      margin-top:10px;
+    }
+
+    .password-rules p{
+      font-size:0.82rem;
+      color:#777;
+      margin:4px 0;
+      transition:0.3s;
+    }
+
+    .valid{
+      color:#2a9d8f !important;
+    }
+
+    .invalid{
+      color:#e63946 !important;
+    }
+.left-linkedin{
+
+    margin-top:40px;
+    text-align:center;
+}
+
+.left-linkedin p{
+
+    font-size:1rem;
+    margin-bottom:14px;
+    opacity:0.95;
+}
+
+
+.left-linkedin-btn{
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+    background:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+
+    transition:0.3s;
+
+    box-shadow:
+            0 3px 8px rgba(0,0,0,0.15);
+}
+
+.left-linkedin-btn img{
+
+    width:35px;
+    height:35px;
+}
+
+
+.left-linkedin-btn:hover{
+
+    transform:translateY(-4px) scale(1.05);
+
+    box-shadow:
+            0 10px 24px rgba(0,0,0,0.22);
+}
+
+    input.invalid-border{
+      border:1px solid #e63946 !important;
+    }
+
+    input.valid-border{
+      border:1px solid #2a9d8f !important;
+    }
+
+    /* FORM SWITCH */
+
+    .register-form{
+      display:none;
+    }
+
+    .register-active .login-form{
+      display:none;
+    }
+
+    .register-active .register-form{
+      display:block;
+      animation:fadeIn 0.4s ease;
+    }
+
+    .login-form{
+      animation:fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
       }
     }
 
-    function copyReply() {
-      const replyText = document.getElementById('replyOutput').innerText;
-      navigator.clipboard.writeText(replyText).then(() => {
-        showToast("Reply copied to clipboard ✅");
-      });
+    /* MOBILE */
+
+    @media(max-width:850px){
+
+      .container{
+        flex-direction:column;
+      }
+
+      .left-panel{
+        width:100%;
+        padding:40px 20px;
+      }
+
+      .right-panel{
+        width:100%;
+      }
     }
 
-    function showToast(message) {
-      let toast = document.getElementById("toast");
-      toast.innerText = message;
-      toast.className = "toast show";
-      setTimeout(() => {
-        toast.className = "toast";
-      }, 2500);
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LEFT PANEL -->
+
+  <div class="left-panel">
+
+    <h1>COMPOSE AI</h1>
+
+    <p>
+      Intelligent email reply assistant powered by
+      Google Gemini and Spring Boot.
+    </p>
+
+    <br>
+
+    <p>
+      Generate professional replies instantly.
+    </p>
+
+<br>
+	<p>
+Note: The backend is hosted on a free-tier service and may go into sleep mode after 30 minutes of inactivity. On the first request, the server may take up to 2–5 minutes to wake up and respond.    
+</p>
+<div class="left-linkedin">
+
+    <p>Connect with me on</p>
+
+    <a
+        href="https://www.linkedin.com/in/shivansh-tiwari-6a6b941b5/"
+        target="_blank"
+        class="left-linkedin-btn"
+    >
+
+        <img src="linkedin.png" alt="LinkedIn">
+
+    </a>
+
+</div>
+
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+
+  <div class="right-panel" id="rightPanel">
+
+    <!-- LOGIN -->
+
+    <div class="login-form">
+
+      <h2>Welcome Back</h2>
+
+      <div class="input-group">
+
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="Email"
+        >
+
+      </div>
+
+      <div class="input-group">
+
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Password"
+        >
+
+      </div>
+
+      <button class="main-btn" onclick="login()">
+        Login
+      </button>
+
+      <div class="switch-text">
+        Don't have an account?
+        <span onclick="showRegister()">Register</span>
+      </div>
+
+    </div>
+
+    <!-- REGISTER -->
+
+    <div class="register-form">
+
+      <h2>Create Account</h2>
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Full Name"
+        >
+
+      </div>
+
+      <div class="input-group">
+
+        <input
+          type="email"
+          id="registerEmail"
+          placeholder="Email"
+          onkeyup="validateRegisterEmail()"
+        >
+
+        <small id="registerEmailError" class="error-text"></small>
+
+      </div>
+
+      <div class="input-group">
+
+        <input
+          type="password"
+          id="registerPassword"
+          placeholder="Password"
+          onkeyup="validatePassword()"
+        >
+
+        <div class="password-rules">
+
+          <p id="lengthRule">• Minimum 8 characters</p>
+          <p id="upperRule">• One uppercase letter</p>
+          <p id="lowerRule">• One lowercase letter</p>
+          <p id="numberRule">• One number</p>
+          <p id="specialRule">• One special character</p>
+
+        </div>
+
+      </div>
+
+      <div class="input-group">
+
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirm Password"
+          onkeyup="checkConfirmPassword()"
+        >
+
+        <small id="confirmError" class="error-text"></small>
+
+      </div>
+
+      <button class="main-btn" onclick="register()">
+        Create Account
+      </button>
+
+     
+      <div class="switch-text">
+        Already have an account?
+        <span onclick="showLogin()">Login</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const rightPanel = document.getElementById("rightPanel");
+
+function showRegister(){
+    rightPanel.classList.add("register-active");
+}
+
+function showLogin(){
+    rightPanel.classList.remove("register-active");
+}
+
+async function login(){
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    if(!email || !password){
+        showToast("Please fill all fields");
+        return;
     }
 
+    try{
 
-    const faders = document.querySelectorAll('.fade-element');
+        const response = await fetch(`${CONFIG.API_URL}/app/login`,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                email:email,
+                password:password
+            })
+        });
 
-    const appearOnScroll = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry, index) => {
-        if (!entry.isIntersecting) return;
-        setTimeout(() => {
-          entry.target.classList.add('show');
-        }, index * 300); // stagger delay
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.2 });
+        const data = await response.text();
 
-    faders.forEach(fader => {
-      appearOnScroll.observe(fader);
-    });
-  </script>
+        if(data === "ADMIN_LOGIN_SUCCESS"){ 
+		localStorage.clear(); 
+		localStorage.setItem( "adminLoggedIn", "true" ); 
+		showToast( "Admin Login Successful ✅" ); 
+		setTimeout(()=>{ window.location.replace( "admin.html" ); },1200); 
+	} 
+	// NORMAL USER LOGIN 
+	else if(data === "LOGIN_SUCCESS"){
+	    localStorage.clear(); 
+	    localStorage.setItem( "userEmail", email );
+            showToast("Login Successful ✅");
+	
+            setTimeout(()=>{
+                window.location.href = "home.html";
+            },1500);
+
+        }else if(data === "INVALID_EMAIL"){
+
+            showToast("Email not found");
+
+        }else if(data === "INVALID_PASSWORD"){
+
+            showToast("Incorrect password");
+
+        }
+
+    }catch(error){
+
+        showToast("Server error");
+    }
+}
+
+async function register(){
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(!name || !email || !password || !confirmPassword){
+
+        showToast("Please fill all fields");
+        return;
+    }
+
+    if(password !== confirmPassword){
+
+        showToast("Passwords do not match");
+        return;
+    }
+
+    try{
+
+        const response = await fetch(`${CONFIG.API_URL}/app/register`,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name:name,
+                email:email,
+                password:password
+            })
+        });
+
+        const data = await response.text();
+
+        if(data === "REGISTER_SUCCESS"){
+
+            showToast("Registration Successful ✅");
+
+            setTimeout(()=>{
+                showLogin();
+            },1500);
+
+        }else if(data === "EMAIL_ALREADY_EXISTS"){
+
+            showToast("Email already registered");
+        }
+
+    }catch(error){
+
+        showToast("Server error");
+    }
+}
+
+function validateRegisterEmail(){
+
+    const email = document.getElementById("registerEmail").value;
+    const error = document.getElementById("registerEmailError");
+    const input = document.getElementById("registerEmail");
+
+    const emailRegex =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(email === ""){
+
+        error.innerText = "";
+        input.classList.remove("invalid-border");
+        input.classList.remove("valid-border");
+        return;
+    }
+
+    if(!emailRegex.test(email)){
+
+        error.innerText = "Please enter a valid email address";
+
+        input.classList.add("invalid-border");
+        input.classList.remove("valid-border");
+
+    }else{
+
+        error.innerText = "";
+
+        input.classList.remove("invalid-border");
+        input.classList.add("valid-border");
+    }
+}
+
+function validatePassword(){
+
+    const password =
+    document.getElementById("registerPassword").value;
+
+    const input =
+    document.getElementById("registerPassword");
+
+    const rules = {
+
+        length: password.length >= 8,
+
+        upper: /[A-Z]/.test(password),
+
+        lower: /[a-z]/.test(password),
+
+        number: /[0-9]/.test(password),
+
+        special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+
+    updateRule("lengthRule", rules.length);
+    updateRule("upperRule", rules.upper);
+    updateRule("lowerRule", rules.lower);
+    updateRule("numberRule", rules.number);
+    updateRule("specialRule", rules.special);
+
+    const isValid =
+        rules.length &&
+        rules.upper &&
+        rules.lower &&
+        rules.number &&
+        rules.special;
+
+    if(password === ""){
+
+        input.classList.remove("invalid-border");
+        input.classList.remove("valid-border");
+
+    }else if(isValid){
+
+        input.classList.add("valid-border");
+        input.classList.remove("invalid-border");
+
+    }else{
+
+        input.classList.add("invalid-border");
+        input.classList.remove("valid-border");
+    }
+}
+
+function updateRule(id, valid){
+
+    const element = document.getElementById(id);
+
+    if(valid){
+
+        element.classList.add("valid");
+        element.classList.remove("invalid");
+
+    }else{
+
+        element.classList.add("invalid");
+        element.classList.remove("valid");
+    }
+}
+
+function checkConfirmPassword(){
+
+    const password =
+    document.getElementById("registerPassword").value;
+
+    const confirm =
+    document.getElementById("confirmPassword").value;
+
+    const error =
+    document.getElementById("confirmError");
+
+    const input =
+    document.getElementById("confirmPassword");
+
+    if(confirm === ""){
+
+        error.innerText = "";
+
+        input.classList.remove("invalid-border");
+        input.classList.remove("valid-border");
+
+        return;
+    }
+
+    if(password !== confirm){
+
+        error.innerText = "Passwords do not match";
+
+        input.classList.add("invalid-border");
+        input.classList.remove("valid-border");
+
+    }else{
+
+        error.innerText = "";
+
+        input.classList.add("valid-border");
+        input.classList.remove("invalid-border");
+    }
+}
+
+function showToast(message){
+
+    const toast = document.getElementById("toast");
+
+    toast.innerText = message;
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+        toast.classList.remove("show");
+    },2500);
+}
+
+</script>
+
 </body>
 </html>

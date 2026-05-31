@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+  <script src="config.js"></script>
+
+    <title>Compose AI Admin</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Segoe UI,sans-serif;
+            background:#f5f1ea;
+            padding:40px;
+        }
+
+        h1{
+            color:#1d56a3;
+            margin-bottom:30px;
+        }
+
+        .table-container{
+
+            background:white;
+            padding:25px;
+
+            border-radius:18px;
+
+            box-shadow:
+                    0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th{
+            background:#1d56a3;
+            color:white;
+            padding:16px;
+            text-align:left;
+        }
+
+        td{
+            padding:16px;
+            border-bottom:1px solid #eee;
+        }
+
+        tr:hover{
+            background:#f9f9f9;
+        }
+
+        .request-badge{
+
+            background:#1d56a3;
+            color:white;
+
+            padding:6px 12px;
+
+            border-radius:20px;
+
+            font-size:0.9rem;
+        }
+
+        .top-bar{
+
+  width:100%;
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  padding:20px 40px 0;
+}
+
+.logout-btn{
+
+  background:#e63946;
+
+  color:white;
+
+  border:none;
+
+  padding:10px 18px;
+
+  border-radius:10px;
+
+  cursor:pointer;
+
+  font-size:0.95rem;
+
+  font-weight:600;
+
+  transition:0.3s;
+}
+
+.logout-btn:hover{
+
+  background:#c1121f;
+
+  transform:translateY(-2px);
+}
+
+    </style>
+
+</head>
+
+<body>
+<script>
+
+// ADMIN PAGE PROTECTION
+
+const admin =
+    localStorage.getItem(
+        "adminLoggedIn"
+    );
+
+if(admin !== "true"){
+
+    window.location.replace(
+        "index.html"
+    );
+}
+
+// PREVENT BACK BUTTON
+
+window.history.pushState(
+    null,
+    null,
+    window.location.href
+);
+
+window.onpopstate = function () {
+
+    window.history.pushState(
+        null,
+        null,
+        window.location.href
+    );
+};
+
+
+function logout(){
+
+    localStorage.clear();
+
+    window.location.replace(
+        "index.html"
+    );
+}
+</script>
+
+<h1>Compose AI Admin Dashboard</h1>
+
+<div class="table-container">
+
+    <table>
+
+        <thead>
+
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Total Requests</th>
+        </tr>
+
+        </thead>
+
+        <tbody id="tableBody">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+
+    async function loadUsers(){
+
+        try{
+
+            const response =
+                await fetch(
+                    `${CONFIG.API_URL}/admin/users`
+                );
+
+            const users =
+                await response.json();
+
+            const tableBody =
+                document.getElementById("tableBody");
+
+            tableBody.innerHTML = "";
+
+            users.forEach(user => {
+
+                tableBody.innerHTML += `
+
+                    <tr>
+
+                        <td>${user.name}</td>
+
+                        <td>${user.email}</td>
+
+                        <td>
+                            <span class="request-badge">
+                                ${user.requestCount}
+                            </span>
+                        </td>
+
+                    </tr>
+                `;
+            });
+
+        }catch(error){
+
+            console.log(error);
+        }
+    }
+
+    loadUsers();
+
+</script>
+
+</body>
+<div style="margin: 40px 0; text-align: center;" class="fade-element">
+
+  <button
+          onclick="logout()"
+          class="logout-btn"
+  >
+      Logout
+  </button>
+
+</div>
+</html>
